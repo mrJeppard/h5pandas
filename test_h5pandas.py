@@ -1,9 +1,5 @@
 """
 Integration style tests for the H5 pandas class.
-
-todo: need to test accessing a single string from iloc
-    check out the use of fixtures hear and see if you can clean up
-    test input.
 """
 from h5pandas import H5pandas
 import pandas as pd
@@ -24,9 +20,9 @@ df.to_hdf(hdf_file, df_key, format="table")
 h5df = H5pandas(hdf_file, df_key)
 
 # Put a slice in the test.hdf5 file.
-slice = ["a", "b", "c"]
-slice_key = "key"
-h5df.save_slice(slice, slice_key)
+subset = ["a", "b", "c"]
+subset_key = "key"
+h5df.save_slice(subset, subset_key)
 
 
 def test_single_row_access():
@@ -44,20 +40,20 @@ def test_single_col_access():
 
 def test_col_access():
     """Test we can access the columns with the list API."""
-    actual = h5df[slice]
-    expected = df[slice]
+    actual = h5df[subset]
+    expected = df[subset]
     assert expected.equals(actual)
 
 
 def test_row_access():
-    actual = h5df.loc[["a", "b", "c"]]
-    expected = df.loc[["a", "b", "c"]]
+    actual = h5df.loc[subset]
+    expected = df.loc[subset]
     assert expected.equals(actual)
 
 
 def test_slice_retrieval():
     """Insert and retrieve a slice."""
-    true_slice = ["a", "b", "c"]
+    true_slice = subset
     slice_key = "key "
     h5df.save_slice(true_slice, slice_key)
     returned_slice = h5df.get_slice(slice_key)
@@ -67,26 +63,26 @@ def test_slice_retrieval():
 
 
 def test_saved_slice_col_access():
-    expected = df[["a", "b", "c"]]
-    actual = h5df["key"]
+    expected = df[subset]
+    actual = h5df[subset_key]
     assert expected.equals(actual)
 
 
 def test_saved_slice_row_access():
-    expected = h5df.loc["key"]
-    actual = df.loc[["a", "b", "c"]]
+    expected = h5df.loc[subset_key]
+    actual = df.loc[subset]
     assert expected.equals(actual)
 
 
 def test_saved_slice_row_and_col_access():
-    abc_rows_and_cols = h5df.loc["key", "key"]
+    abc_rows_and_cols = h5df.loc[subset_key, subset_key]
     actual = abc_rows_and_cols
-    expected = df.loc[["a", "b", "c"], ["a", "b", "c"]]
+    expected = df.loc[subset, subset]
     assert expected.equals(actual)
 
 def test_stored_slice_retrival_is_list():
     actual = h5df.get_saved_slices()
-    expected = "key"
+    expected = subset_key
     assert actual == expected
 
 def test_stored_slice_retrival_is_list():
@@ -95,8 +91,8 @@ def test_stored_slice_retrival_is_list():
     assert test_passes
 
 def test_values_of_stored_slice():
-    actual = pd.Series(h5df.get_slice("key"))
-    expected = pd.Series(slice)
+    actual = pd.Series(h5df.get_slice(subset_key))
+    expected = pd.Series(subset)
     assert expected.equals(actual)
 
 def test_get_all():
