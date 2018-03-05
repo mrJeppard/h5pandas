@@ -26,7 +26,7 @@ Needs:
             format="table"
         )
     ```
-    Here's some example code describing all functionality in 40 lines.
+    Here's all the functionality in 40 lines.
     ```
         # pd_access points to the dataframe in your hdf file.
         pd_access = H5pandas("path/to/h.hdf5", "key_for_my_dataframe")
