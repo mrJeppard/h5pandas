@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Output from test
+test.hdf5
+
+# Jet brain editor file.
+.idea
+
 # C extensions
 *.so
 
