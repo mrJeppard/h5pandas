@@ -28,15 +28,10 @@ slice = ["a", "b", "c"]
 slice_key = "key"
 h5df.save_slice(slice, slice_key)
 
-def test_single_row_access():
-    print pd.__version__
-    import tables
-    print tables.__version__
 
+def test_single_row_access():
     actual = h5df.loc["a"]
     expected = df.loc["a"]
-    print actual
-    print expected
     assert expected.equals(actual)
 
 
@@ -49,44 +44,60 @@ def test_single_col_access():
 
 def test_col_access():
     """Test we can access the columns with the list API."""
-    abc_cols = h5df[slice]
-    assert df[slice].equals(abc_cols)
+    actual = h5df[slice]
+    expected = df[slice]
+    assert expected.equals(actual)
 
 
 def test_row_access():
-    abc_rows = h5df.loc[["a", "b", "c"]]
-    assert df.loc[["a", "b", "c"]].equals(abc_rows)
+    actual = h5df.loc[["a", "b", "c"]]
+    expected = df.loc[["a", "b", "c"]]
+    assert expected.equals(actual)
 
 
 def test_slice_retrieval():
+    """Insert and retrieve a slice."""
     true_slice = ["a", "b", "c"]
     slice_key = "key "
     h5df.save_slice(true_slice, slice_key)
     returned_slice = h5df.get_slice(slice_key)
-    assert pd.Series(true_slice).equals(pd.Series(returned_slice))
+    expected = pd.Series(true_slice)
+    actual = pd.Series(returned_slice)
+    assert expected.equals(actual)
 
 
 def test_saved_slice_col_access():
-    assert h5df["key"].equals(df[["a", "b", "c"]])
+    expected = df[["a", "b", "c"]]
+    actual = h5df["key"]
+    assert expected.equals(actual)
 
 
 def test_saved_slice_row_access():
-    assert h5df.loc["key"].equals(df.loc[["a", "b", "c"]])
+    expected = h5df.loc["key"]
+    actual = df.loc[["a", "b", "c"]]
+    assert expected.equals(actual)
 
 
 def test_saved_slice_row_and_col_access():
     abc_rows_and_cols = h5df.loc["key", "key"]
-    assert abc_rows_and_cols.equals(
-        df.loc[["a", "b", "c"], ["a", "b", "c"]]
-    )
+    actual = abc_rows_and_cols
+    expected = df.loc[["a", "b", "c"], ["a", "b", "c"]]
+    assert expected.equals(actual)
 
-def test_stored_slice_retrival():
+def test_stored_slice_retrival_is_list():
+    actual = h5df.get_saved_slices()
+    expected = "key"
+    assert actual == expected
+
+def test_stored_slice_retrival_is_list():
     saved_slices = h5df.get_saved_slices()
-    assert isinstance(saved_slices, list) and saved_slices[0] == "key"
+    test_passes = isinstance(saved_slices, list)
+    assert test_passes
 
-def test_values_of_stored_slicce():
-    retrieved_slice = h5df.get_slice("key")
-    assert pd.Series(slice).equals(pd.Series(retrieved_slice))
+def test_values_of_stored_slice():
+    actual = pd.Series(h5df.get_slice("key"))
+    expected = pd.Series(slice)
+    assert expected.equals(actual)
 
 def test_get_all():
     actual = h5df.get()
