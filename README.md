@@ -12,19 +12,20 @@ Needs:
 
  H5pandas is a simple proxy class that does two things:
 
-        Allows accessing a HDF5 pandas matrix with pandas indexing
-        syntax, i.e. pandas.DataFrame[] and pandas.DataFrame.loc[].
+ 1. Allows accessing a HDF5 pandas matrix with pandas indexing
+ syntax, pandas.DataFrame[] and pandas.DataFrame.loc[].
 
-        Lets a user store lists of column names and/or row names and use
-        them with the provided indexing.
+ 2. Lets a user store lists of column names and/or row names and use
+ them for indexing.
 
-    H5pandas requires that you have an hdf file with dataframes stored:
+    H5pandas requires that you have an hdf file with dataframes stored by:
+    ```
         pandas.DataFrame.to_hdf(
-        "path/to/h.hdf5",
-        "key_for_my_dataframe",
-        format="table"
+            "path/to/h.hdf5",
+            "key_for_my_dataframe",
+            format="table"
         )
-
+    ```
     Here's some example code describing all functionality in 40 lines.
     ```
         # pd_access points to the dataframe in your hdf file.
