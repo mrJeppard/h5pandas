@@ -1,6 +1,6 @@
 # h5pandas
-pandas like indexing syntax for a pandas dataframe stored in a .hdf
-file. It also provides a persistent store for subsets of row or column
+H5pandas adds pandas-like indexing syntax to pandas objects stored in hdf5 files.  
+It also provides a persistent store for subsets of row or column
 ids that can be used to index the matrix.
 
 Needs:
